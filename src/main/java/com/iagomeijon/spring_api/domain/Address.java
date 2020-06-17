@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 public class Address implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -25,6 +27,8 @@ public class Address implements Serializable {
 	@JoinColumn(name = "city_id")
 	private City city;
 	
+	//Stop reference loop with client, only client show your address
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name = "client_id")
 	private Client client;

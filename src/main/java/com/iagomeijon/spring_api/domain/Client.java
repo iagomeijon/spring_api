@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.iagomeijon.spring_api.domain.enums.ClientType;
 
 @Entity
@@ -29,8 +30,10 @@ public class Client implements Serializable{
 	private String document;
 	private Integer type;
 	
+	//stop reference loop with addresses
+	@JsonManagedReference
 	@OneToMany(mappedBy = "client")
-	private List<Address> adresses = new ArrayList<>();
+	private List<Address> addresses = new ArrayList<>();
 	
 	//mapping a weak entity, create a table for phones
 	@ElementCollection
@@ -80,10 +83,10 @@ public class Client implements Serializable{
 		this.type = type.getId();
 	}
 	public List<Address> getAdresses() {
-		return adresses;
+		return addresses;
 	}
 	public void setAdresses(List<Address> adresses) {
-		this.adresses = adresses;
+		this.addresses = adresses;
 	}
 	public Set<String> getPhones() {
 		return phones;
