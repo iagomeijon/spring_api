@@ -1,22 +1,31 @@
 package com.iagomeijon.spring_api.config;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.web.servlet.filter.OrderedRequestContextFilter;
 import org.springframework.context.annotation.Configuration;
 
 import com.iagomeijon.spring_api.domain.Address;
+import com.iagomeijon.spring_api.domain.BillPayment;
+import com.iagomeijon.spring_api.domain.CardPayment;
 import com.iagomeijon.spring_api.domain.Category;
 import com.iagomeijon.spring_api.domain.City;
 import com.iagomeijon.spring_api.domain.Client;
+import com.iagomeijon.spring_api.domain.Order;
+import com.iagomeijon.spring_api.domain.Payment;
 import com.iagomeijon.spring_api.domain.Product;
 import com.iagomeijon.spring_api.domain.State;
 import com.iagomeijon.spring_api.domain.enums.ClientType;
+import com.iagomeijon.spring_api.domain.enums.PaymentStatus;
 import com.iagomeijon.spring_api.repositories.AddressRepository;
 import com.iagomeijon.spring_api.repositories.CategoryRepository;
 import com.iagomeijon.spring_api.repositories.CityRepository;
 import com.iagomeijon.spring_api.repositories.ClientRepository;
+import com.iagomeijon.spring_api.repositories.OrderRepository;
+import com.iagomeijon.spring_api.repositories.PaymentRepository;
 import com.iagomeijon.spring_api.repositories.ProductRepository;
 import com.iagomeijon.spring_api.repositories.StateRepository;
 
@@ -40,6 +49,12 @@ public class Instatiation implements CommandLineRunner{
 	
 	@Autowired
 	private AddressRepository addressRepository;
+	
+	@Autowired
+	private OrderRepository orderRepository;
+	
+	@Autowired
+	private PaymentRepository paymentRepository;
 	
 	@Override
 	public void run(String... args) throws Exception {
@@ -88,11 +103,28 @@ public class Instatiation implements CommandLineRunner{
 		Address address2 = new Address(null, "street2", "neighborhood2", "11", "42638874", client1, city2);
 		Address address3 = new Address(null, "street3", "neighborhood3", "12", "42638745", client2, city3);
 		
-		client1.getAdresses().addAll(Arrays.asList(address1, address2));
-		client2.getAdresses().add(address3);
+		client1.getAddressses().addAll(Arrays.asList(address1, address2));
+		client2.getAddressses().add(address3);
 		
 		clientRepository.saveAll(Arrays.asList(client1, client2));
 		addressRepository.saveAll(Arrays.asList(address1, address2, address3));
+		
+		// MARK Oder and Payment 
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm"); 
+		
+		Order order1 = new Order(null, sdf.parse("30/05/2020 10:34"), client1, client1.getAddressses().get(0));
+		Order order2 = new Order(null, sdf.parse("31/04/2020 18:34"), client1, client1.getAddressses().get(1));
+		
+		Payment payment1 = new CardPayment(null, PaymentStatus.CLOSED, order1, 6);
+		Payment payment2 = new BillPayment(null, PaymentStatus.PENDING, order2, sdf.parse("05/05/2020 00:00"), sdf.parse("06/06/2020 00:00"));
+		order1.setPayment(payment1);
+		order2.setPayment(payment2);
+		
+		client1.getOrder().addAll(Arrays.asList(order1, order2));
+		
+		orderRepository.saveAll(Arrays.asList(order1, order2));
+		paymentRepository.saveAll(Arrays.asList(payment1, payment2));
+		clientRepository.save(client1);
 	}
 
 }
