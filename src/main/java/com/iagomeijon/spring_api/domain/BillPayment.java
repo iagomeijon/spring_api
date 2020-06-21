@@ -6,13 +6,17 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.iagomeijon.spring_api.domain.enums.PaymentStatus;
 
 @Entity
 public class BillPayment extends Payment {
 	private static final long serialVersionUID = 1L;
 
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	private Date endDate;
+	
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	private Date paymentDate;
 
 	public BillPayment() {
