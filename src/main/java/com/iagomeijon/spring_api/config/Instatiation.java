@@ -15,6 +15,7 @@ import com.iagomeijon.spring_api.domain.Category;
 import com.iagomeijon.spring_api.domain.City;
 import com.iagomeijon.spring_api.domain.Client;
 import com.iagomeijon.spring_api.domain.Order;
+import com.iagomeijon.spring_api.domain.OrderItem;
 import com.iagomeijon.spring_api.domain.Payment;
 import com.iagomeijon.spring_api.domain.Product;
 import com.iagomeijon.spring_api.domain.State;
@@ -24,6 +25,7 @@ import com.iagomeijon.spring_api.repositories.AddressRepository;
 import com.iagomeijon.spring_api.repositories.CategoryRepository;
 import com.iagomeijon.spring_api.repositories.CityRepository;
 import com.iagomeijon.spring_api.repositories.ClientRepository;
+import com.iagomeijon.spring_api.repositories.OrderItemRepository;
 import com.iagomeijon.spring_api.repositories.OrderRepository;
 import com.iagomeijon.spring_api.repositories.PaymentRepository;
 import com.iagomeijon.spring_api.repositories.ProductRepository;
@@ -55,6 +57,9 @@ public class Instatiation implements CommandLineRunner{
 	
 	@Autowired
 	private PaymentRepository paymentRepository;
+	
+	@Autowired
+	private OrderItemRepository orderItemRepository;
 	
 	@Override
 	public void run(String... args) throws Exception {
@@ -125,6 +130,21 @@ public class Instatiation implements CommandLineRunner{
 		orderRepository.saveAll(Arrays.asList(order1, order2));
 		paymentRepository.saveAll(Arrays.asList(payment1, payment2));
 		clientRepository.save(client1);
+		
+		// MARK OrderItem
+		OrderItem orderItem1 = new OrderItem(order1, p1, 00.00, 1, 3000.00);
+		OrderItem orderItem2 = new OrderItem(order1, p3, 00.00, 2, 160.00);
+		OrderItem orderItem3 = new OrderItem(order2, p2, 00.00, 1, 150.00);
+		
+		order1.getItens().addAll(Arrays.asList(orderItem1, orderItem2));
+		order2.getItens().add(orderItem3);
+		
+		p1.getItens().add(orderItem1);
+		p2.getItens().add(orderItem3);
+		p3.getItens().add(orderItem2);
+		
+		orderItemRepository.saveAll(Arrays.asList(orderItem1, orderItem2, orderItem3));
+		
 	}
 
 }
