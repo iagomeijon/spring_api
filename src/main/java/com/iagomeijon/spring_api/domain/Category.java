@@ -24,8 +24,6 @@ public class Category implements Serializable{
 	private String name;
 	
 	//MARK: many to many relation, other side, first side in product.class.
-	// JsonManagedReference stop reference product and category loop, get only product list, don't get categories list in product.class
-	@JsonManagedReference
 	@ManyToMany(mappedBy = "categories")
 	private List<Product> products = new ArrayList<>();
 	

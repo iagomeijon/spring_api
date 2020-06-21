@@ -15,9 +15,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Product implements Serializable {
@@ -30,8 +28,8 @@ public class Product implements Serializable {
 	private double price;
 	
 	//MARK : Many to Many relation with category, first side
-	// JsonBackReference don't get categories list, so stop reference loop in many to many, category.class has @JsonManagedReference
-	@JsonBackReference
+	// JsonIgnore don't get categories list, so stop reference loop in many to many, category.class has @JsonManagedReference
+	@JsonIgnore
 	@ManyToMany
 	@JoinTable(
 			name = "product_category", 
