@@ -1,5 +1,6 @@
 package com.iagomeijon.spring_api.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,5 +41,9 @@ public class CategoryService {
 			throw new DataIntegratyException("Data Integrity violaion");
 		}
 		
+	}
+
+	public List<Category> getAll() {
+		return repo.findAll();
 	}
 }
