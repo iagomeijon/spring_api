@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.iagomeijon.spring_api.domain.Category;
+import com.iagomeijon.spring_api.dto.CategoryDTO;
 import com.iagomeijon.spring_api.repositories.CategoryRepository;
 import com.iagomeijon.spring_api.services.exceptions.DataIntegratyException;
 import com.iagomeijon.spring_api.services.exceptions.ObjectNotFoundException;
@@ -54,5 +55,9 @@ public class CategoryService {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction),
 		orderBy);
 		return repo.findAll(pageRequest);
+	}
+	
+	public Category fromDTO (CategoryDTO obj) {
+		return new Category(obj.getId(), obj.getName());
 	}
 }

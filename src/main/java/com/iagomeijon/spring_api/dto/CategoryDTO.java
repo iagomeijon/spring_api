@@ -4,10 +4,13 @@ import java.io.Serializable;
 
 import com.iagomeijon.spring_api.domain.Category;
 
+
 public class CategoryDTO implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
+	
 	private Integer id;
+
 	private String name;
 	
 	public CategoryDTO () {
