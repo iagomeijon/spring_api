@@ -51,7 +51,7 @@ public class Client implements Serializable {
 		this.name = nome;
 		this.email = email;
 		this.document = cpfOuCnpj;
-		this.type = type.getId();
+		this.type = (type == null) ? null : type.getId();
 	}
 
 
