@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.iagomeijon.spring_api.domain.Category;
+import com.iagomeijon.spring_api.domain.Client;
 import com.iagomeijon.spring_api.dto.CategoryDTO;
 import com.iagomeijon.spring_api.repositories.CategoryRepository;
 import com.iagomeijon.spring_api.services.exceptions.DataIntegratyException;
@@ -32,9 +33,10 @@ public class CategoryService {
 		return repo.save(category);
 	}
 
-	public Category update(Category category) {
-		findById(category.getId());
-		return repo.save(category);
+	public Category update(Category categoryUpdated) {
+		Category client = findById(categoryUpdated.getId());
+		updateData(client, categoryUpdated);
+		return repo.save(client);
 	}
 
 	public void delete(Integer id) {
@@ -59,5 +61,10 @@ public class CategoryService {
 	
 	public Category fromDTO (CategoryDTO obj) {
 		return new Category(obj.getId(), obj.getName());
+	}
+	
+	private void updateData(Category newCategory, Category categoryUpdated) {
+		newCategory.setName(categoryUpdated.getName());
+		
 	}
 }
