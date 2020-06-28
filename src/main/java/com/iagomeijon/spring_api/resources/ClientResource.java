@@ -20,6 +20,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.iagomeijon.spring_api.domain.Client;
 import com.iagomeijon.spring_api.dto.ClientDTO;
+import com.iagomeijon.spring_api.dto.ClientNewDTO;
 import com.iagomeijon.spring_api.services.ClientService;
 
 @RestController
@@ -34,14 +35,14 @@ public class ClientResource {
 		return ResponseEntity.ok(service.findById(id));
 	}
 	
-//	@PostMapping
-//	public ResponseEntity<Void> insert(@RequestBody ClientDTO clientDTO) {
-//		Client category = service.fromDTO(clientDTO);
-//		category = service.insert(clientDTO);
-//		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-//				.buildAndExpand(category.getId()).toUri();
-//		return ResponseEntity.created(uri).build();
-//	}
+	@PostMapping
+	public ResponseEntity<Void> insert(@RequestBody ClientNewDTO clientDTO) {
+		Client client = service.fromDTO(clientDTO);
+		client = service.insert(client);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+				.buildAndExpand(client.getId()).toUri();
+		return ResponseEntity.created(uri).build();
+	}
 	
 	@PutMapping("/{id}")
 	public ResponseEntity<Void> update(@RequestBody ClientDTO clientDTO, @PathVariable Integer id) {
